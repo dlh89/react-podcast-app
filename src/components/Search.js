@@ -23,9 +23,10 @@ export default class Search extends React.Component {
             if (e.target.readyState == 4 && e.target.status == 200) {
                 const data = JSON.parse(e.target.responseText);
                 this.handlePodcasts(data.results);
+                console.log(data.results);
             }
         }
-        const url = `https://itunes.apple.com/search?term=${searchTerm}&entity=podcast&attribute=descriptionTerm&limit=10`
+        const url = `https://itunes.apple.com/search?term=${searchTerm}&entity=podcast&attribute=descriptionTerm&limit=12`
         xhttp.open("GET", url, true);
         xhttp.send();
     }
