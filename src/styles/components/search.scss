@@ -1,0 +1,18 @@
+.search {
+    &__input {
+        background-color: #fff;
+        border: 1px solid $color-grey;
+        margin-right: .2rem;
+        padding: .8rem 1.2rem;
+    }
+
+    &__list {
+        list-style: none;
+    }
+
+    &__item {
+        border: 1px solid $color-grey;
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+}

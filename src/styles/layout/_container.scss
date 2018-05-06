@@ -1,0 +1,9 @@
+.container {
+    margin: auto;
+    max-width: 96rem;
+
+    @include respond(tab-port) {
+        margin: 0 3.2rem;
+        max-width: none;
+    }
+}

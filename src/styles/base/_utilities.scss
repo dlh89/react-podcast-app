@@ -1,0 +1,25 @@
+.u-padding-bottom-large {
+    padding-bottom: 8rem;
+}
+
+.u-margin-top-large {
+    margin-top: 8rem !important;
+}
+
+.u-margin-top-medium {
+    margin-top: 6rem !important;
+}
+
+.u-margin-top-small {
+    margin-top: 4rem !important;
+}
+
+.u-center-text { text-align: center !important; }
+
+.u-absolute-center {
+    position: absolute;
+    // centre
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
