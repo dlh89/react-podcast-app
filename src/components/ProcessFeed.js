@@ -21,7 +21,7 @@ export default class ProcessFeed extends React.Component {
                 this.convertXmlToJson(data);
             }
         }
-        const url = this.props.feedUrl;
+        const url = `/api/feed?feedUrl=${this.props.feedUrl}`;
         xhttp.open("GET", url, true);
         xhttp.send();
     }

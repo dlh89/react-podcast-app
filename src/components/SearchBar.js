@@ -1,26 +1,34 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-export default class SearchBar extends React.Component {
+class SearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             searchTerm: ''
         }
         this.handleInput = this.handleInput.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);        
     }
     handleInput(e) {
         this.setState({searchTerm: e.target.value});
     }
 
+    handleSubmit(e) {
+        e.preventDefault();
+        this.props.history.push(`/search/${this.state.searchTerm}`)
+    }
+
     render() {
         return (
             <div className="container">
-                <form action="/search" method="get">
+                <form action="/search" method="get" onSubmit={this.handleSubmit}>
                     <input type="text" placeholder="Enter a podcast" name="searchTerm" className="search__input" onChange={this.handleInput} />
-                    <Link to={`/search/${this.state.searchTerm}`}>Search</Link>
+                    <button className="btn__search">Search</button>
                 </form>
             </div>
         )
     }
 }
+
+export default withRouter(SearchBar)

@@ -6,7 +6,9 @@ export default class IndecisionApp extends React.Component {
     render() {
         return (
             <Router>
-                <AppRouter />
+                <div>
+                    <AppRouter />
+                </div>
             </Router>
         )
     }

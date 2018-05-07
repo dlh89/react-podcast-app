@@ -26,7 +26,7 @@ export default class Search extends React.Component {
                 console.log(data.results);
             }
         }
-        const url = `https://itunes.apple.com/search?term=${searchTerm}&entity=podcast&attribute=descriptionTerm&limit=12`
+        const url = `https://itunes.apple.com/search?term=${searchTerm}&entity=podcast&limit=12`
         xhttp.open("GET", url, true);
         xhttp.send();
     }
@@ -52,10 +52,9 @@ export default class Search extends React.Component {
                         {this.state.podcasts.map(function(podcast, index){
                             return (
                                 <li key={ index } className="search__item">
-                                    <p>Podcast: {podcast.trackName}</p>
+                                    <Link to={`/podcast/${podcast.feedUrl}`}>{podcast.trackName}</Link>                                
                                     <p>Artist: {podcast.artistName}</p>
-                                    <img src={podcast.artworkUrl30} />
-                                    <Link to={`/podcast/${podcast.feedUrl}`}>{podcast.feedUrl}</Link>
+                                    <img src={podcast.artworkUrl100} />
                                 </li>
                             );
                         })}
