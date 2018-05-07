@@ -1,15 +1,17 @@
 import React from 'react';
 import SearchBar from '../components/SearchBar';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 
 const Navbar = () => (
-    <div className="container">
-        <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/search">Search</Link></li>            
+    <div className="nav">
+        <div className="nav__container">
+            <ul className="nav__list">
+                <li className="nav__item"><NavLink to="/" className="nav__link" activeClassName="nav__link--active" exact={true}>Home</NavLink></li>
+                <li className="nav__item"><NavLink to="/search" className="nav__link" activeClassName="nav__link--active">Search</NavLink></li>            
+            </ul>
             <SearchBar />
-        </ul>
+        </div>
     </div>
 )
 

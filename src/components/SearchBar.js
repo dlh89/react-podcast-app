@@ -22,12 +22,10 @@ class SearchBar extends React.Component {
 
     render() {
         return (
-            <div className="container">
-                <form action="/search" method="get" onSubmit={this.handleSubmit}>
-                    <input type="text" placeholder="Enter a podcast" name="searchTerm" className="search__input" onChange={this.handleInput} />
-                    <button className="btn__search">Search</button>
-                </form>
-            </div>
+            <form action="/search" method="get" onSubmit={this.handleSubmit}>
+                <input type="text" placeholder="Enter a podcast" name="searchTerm" className="search__input" onChange={this.handleInput} />
+                <button className="search__button">Search</button>
+            </form>
         )
     }
 }

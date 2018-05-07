@@ -1,9 +1,35 @@
 .nav {
+    background-color: $color-primary;
+    padding: .8rem 0;
+
+    &__container {
+        align-items: center;
+        display: flex;
+        margin: auto;
+        max-width: 96rem;
+
+        @include respond(tab-port) {
+            margin: 0 3.2rem;
+            max-width: none;
+        }
+    }
+
     &__list {
+        display: flex;        
         list-style: none;
     }
 
+    &__item {
+        min-width: 12.5rem;
+        text-align: center;
+    }
+
     &__link {
+        color: $color-white;          
         text-decoration: none;        
+
+        &--active {
+            font-weight: 600;
+        }
     }
 }

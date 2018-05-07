@@ -32,13 +32,6 @@ export default class Search extends React.Component {
     }
 
     handlePodcasts = (results) => {
-        // add s to http in feed urls if it doesn't exist
-        // results.forEach(result => {
-        //     if (result.feedUrl.substr(0,7) === 'http://') {
-        //         const secureUrl = `https://${result.feedUrl.substr(7)}`;
-        //         result.feedUrl = secureUrl;
-        //     }
-        // })
         this.setState({
             podcasts: results
         })
@@ -48,17 +41,23 @@ export default class Search extends React.Component {
         return (
             <div>
                 {this.props.searchTerm ? (
-                    <ul className="search__list">
-                        {this.state.podcasts.map(function(podcast, index){
-                            return (
-                                <li key={ index } className="search__item">
-                                    <Link to={`/podcast/${podcast.feedUrl}`}>{podcast.trackName}</Link>                                
-                                    <p>Artist: {podcast.artistName}</p>
-                                    <img src={podcast.artworkUrl100} />
-                                </li>
-                            );
-                        })}
-                    </ul>
+                    <div>
+                        <p>Showing {this.state.podcasts.length} results for <strong>{this.props.searchTerm}</strong></p>
+                        <ul className="search__list">
+                            {this.state.podcasts.map(function(podcast, index){
+                                return (
+                                    <li key={ index } className="search__item">
+                                        <img src={podcast.artworkUrl100} />
+                                        <div className="search__details">
+                                            <Link to={`/podcast/${podcast.feedUrl}`}>{podcast.trackName}</Link>                                
+                                            <p>Artist: {podcast.artistName}</p>
+                                            <p>Genre: {podcast.primaryGenreName}</p>
+                                        </div>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
                 ) : (
                     <p>You must enter a search term.</p>
                 )}

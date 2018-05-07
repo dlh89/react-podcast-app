@@ -1,12 +1,10 @@
 import React from 'react';
-import ProcessFeed from '../components/ProcessFeed';
-import Search from '../components/Search';
 
-const HomePage = ({ match }) => (
+const SearchPage = () => (
     <div className="container">
         <h1>Search</h1>
-        <Search searchTerm={match.params.searchTerm}/>
+        <p>Enter the name of a podcast in the search bar.</p>
     </div>
 )
 
-export default HomePage;
+export default SearchPage;

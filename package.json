@@ -41,6 +41,7 @@
     "webpack-dev-server": "2.9.5"
   },
   "devDependencies": {
+    "babel-plugin-transform-object-assign": "^6.22.0",
     "npm-run-all": "^4.1.3"
   }
 }

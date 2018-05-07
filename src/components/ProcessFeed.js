@@ -46,10 +46,9 @@ export default class ProcessFeed extends React.Component {
     render() {
         return (
             <div>
-                <h1>ProcessFeedComponent</h1>
                 {!this.state.title ? (<p>Getting data...</p>) : (
                     <div>
-                        <h1>{this.state.title}</h1>
+                        <h1 className="heading heading--secondary">{this.state.title}</h1>
                         <p>Episodes: {this.state.episodes.length}</p>
                         <p>The longest episode to date is entitled "{this.state.durations[this.state.durations.length -1].title}" and is {this.state.durations[this.state.durations.length -1].duration / 60} minutes long.</p>
                         <img src={this.state.image} />

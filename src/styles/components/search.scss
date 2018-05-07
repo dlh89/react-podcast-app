@@ -1,9 +1,20 @@
 .search {
     &__input {
-        background-color: #fff;
-        border: 1px solid $color-grey;
-        margin-right: .2rem;
+        background-color: $color-white;
+        border: none;
         padding: .8rem 1.2rem;
+    }
+
+    &__button {
+        background-color: $color-white;
+        border: none;
+        cursor: pointer;
+        padding: .8rem 1.2rem;
+        transition: background-color .2s;
+
+        &:hover {
+            background-color: $color-secondary;
+        }
     }
 
     &__list {
@@ -11,8 +22,15 @@
     }
 
     &__item {
+        align-items: flex-start;
+        background-image: linear-gradient(to bottom right, $color-white, $color-light-grey);
         border: 1px solid $color-grey;
-        padding: 1rem;
+        display: flex;
         margin: 1rem 0;
+    }
+
+    &__details {
+        display: block;
+        margin: 0 1rem;
     }
 }
