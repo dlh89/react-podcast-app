@@ -33,12 +33,12 @@ export default class Search extends React.Component {
 
     handlePodcasts = (results) => {
         // add s to http in feed urls if it doesn't exist
-        results.forEach(result => {
-            if (result.feedUrl.substr(0,7) === 'http://') {
-                const secureUrl = `https://${result.feedUrl.substr(7)}`;
-                result.feedUrl = secureUrl;
-            }
-        })
+        // results.forEach(result => {
+        //     if (result.feedUrl.substr(0,7) === 'http://') {
+        //         const secureUrl = `https://${result.feedUrl.substr(7)}`;
+        //         result.feedUrl = secureUrl;
+        //     }
+        // })
         this.setState({
             podcasts: results
         })
