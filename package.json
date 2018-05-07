@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "David Hide",
   "license": "MIT",
+  "engines": {
+    "node": "8.11.1"
+  },
   "scripts": {
     "serve": "live-server public/",
     "build": "webpack",
