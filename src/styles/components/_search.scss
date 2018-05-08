@@ -33,4 +33,8 @@
         display: block;
         margin: 0 1rem;
     }
+
+    &__image {
+        border-right: 1px solid $color-grey;
+    }
 }

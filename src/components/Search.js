@@ -47,7 +47,7 @@ export default class Search extends React.Component {
                             {this.state.podcasts.map(function(podcast, index){
                                 return (
                                     <li key={ index } className="search__item">
-                                        <img src={podcast.artworkUrl100} />
+                                        <img src={podcast.artworkUrl100} className="search__image"/>
                                         <div className="search__details">
                                             <Link to={`/podcast/${podcast.feedUrl}`}>{podcast.trackName}</Link>                                
                                             <p>Artist: {podcast.artistName}</p>

@@ -2,8 +2,7 @@ import React from 'react';
 import ProcessFeed from '../components/ProcessFeed';
 
 const Podcast = ({ match }) => (
-    <div className="container">
-        <h1 className="heading heading--primary">Podcast Page</h1>
+    <div>
         <ProcessFeed feedUrl={match.params.rssFeed}/>
     </div>
 )

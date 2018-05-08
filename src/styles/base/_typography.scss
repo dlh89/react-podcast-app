@@ -1,11 +1,12 @@
 body {
-    font-family: 'Fira Sans', sans-serif;
-    font-size: 1.6rem;
+    font-family: 'Assistant', sans-serif;
+    font-size: 1.8rem;
     line-height: 1.7;
 }
 
 .heading {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
 
     &--main {
         font-size: 6.2rem;        
@@ -16,11 +17,11 @@ body {
     }
 
     &--primary {
-        font-size: 3rem;
+        font-size: 4rem;
     }
 
     &--secondary {
-        font-size: 2.6rem;
+        font-size: 3.2rem;
         font-weight: 300;
     }
 }

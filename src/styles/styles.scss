@@ -7,6 +7,10 @@
 @import './base/utilities';
 
 @import './components/search';
+@import './components/stats';
 
 @import './layout/container';
 @import './layout/navigation';
+
+@import './pages/home';
+@import './pages/podcast';
