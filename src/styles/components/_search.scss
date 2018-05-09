@@ -2,6 +2,7 @@
     &__input {
         background-color: $color-white;
         border: none;
+        font-family: inherit;
         padding: .8rem 1.2rem;
     }
 
@@ -9,6 +10,7 @@
         background-color: $color-white;
         border: none;
         cursor: pointer;
+        font-family: inherit;        
         padding: .8rem 1.2rem;
         transition: background-color .2s;
 
@@ -23,18 +25,19 @@
 
     &__item {
         align-items: flex-start;
-        background-image: linear-gradient(to bottom right, $color-white, $color-light-grey);
-        border: 1px solid $color-grey;
+        background-image: linear-gradient(to bottom right, $color-white, $color-off-white);
+        box-shadow: $box-shadow;
         display: flex;
-        margin: 1rem 0;
+        margin: 2rem 0;
     }
 
     &__details {
         display: block;
         margin: 0 1rem;
+        padding: 1.2rem;
     }
 
     &__image {
-        border-right: 1px solid $color-grey;
+        max-width: 15rem;
     }
 }

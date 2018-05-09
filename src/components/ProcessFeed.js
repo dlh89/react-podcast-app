@@ -42,7 +42,8 @@ export default class ProcessFeed extends React.Component {
                     episodes: data.episodes,
                     durations: data.episodes.map(episode => ({title: episode.title, duration: episode.duration}))
                         .sort((a, b) => a.duration > b.duration ? 1 : -1),
-                    image: data.image,
+                    averageDuration: data.episodes.map(episode => episode.duration).reduce((accumulator, currentValue) => accumulator + currentValue) / data.episodes.length,
+                    image: data.image
                 });
           });
     }
@@ -64,9 +65,31 @@ export default class ProcessFeed extends React.Component {
                         </div>
                         <div className="section-stats u-margin-top-large">
                             <div className="container">
+                                <h2 className="heading heading--secondary">Lifespan</h2>
                                 <p>Episodes: {this.state.episodes.length}</p>
                                 <p className="stats__headline">This podcast released its first episode <strong>{moment(this.state.episodes[this.state.episodes.length-1].published, "YYYYMMDD").fromNow()}</strong>.  The first episode is entitled <strong>"{this.state.episodes[this.state.episodes.length-1].title}"</strong> and was published on <strong>{this.state.episodes[this.state.episodes.length-1].published.toGMTString()}</strong>.</p>
-                                <p className="stats__headline">The longest episode to date is entitled <strong>"{this.state.durations[this.state.durations.length -1].title}"</strong> and is <strong>{moment().startOf('day').seconds(this.state.durations[this.state.durations.length -1].duration).format('H:mm:ss')}</strong> long.</p>
+                                <h2 className="heading heading--secondary">Durations</h2>                                
+                                <div className="row">
+                                    <div className="col-1-of-3">
+                                        <div className="card">
+                                            <h3 className="card__heading">Longest Episode</h3>
+                                            <p className="card__text">The longest episode to date is entitled <strong>"{this.state.durations[this.state.durations.length -1].title}"</strong> and is <strong>{moment().startOf('day').seconds(this.state.durations[this.state.durations.length -1].duration).format('H:mm:ss')}</strong> long.</p>
+                                        </div>
+                                    </div>
+                                    <div className="col-1-of-3">
+                                        <div className="card">
+                                            <h3 className="card__heading">Shortest Episode</h3>                                        
+                                            <p className="card__text">The shortest episode to date is entitled <strong>"{this.state.durations[0].title}"</strong> and is <strong>{moment().startOf('day').seconds(this.state.durations[0].duration).format('H:mm:ss')}</strong> long.</p>
+                                        </div>
+                                    </div>
+                                    <div className="col-1-of-3">
+                                        <div className="card">
+                                            <h3 className="card__heading">Average Episode Length</h3>                                                                                
+                                            <p className="card__text">The average episode is <strong>{moment().startOf('day').seconds(this.state.averageDuration).format('H:mm:ss')}</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h2 className="heading heading--secondary">Releases</h2>                                
                                 <img src={this.state.image} className="stats__image" />
                             </div>
                         </div>
