@@ -72,20 +72,32 @@ export default class ProcessFeed extends React.Component {
                                 <div className="row">
                                     <div className="col-1-of-3">
                                         <div className="card">
-                                            <h3 className="card__heading">Longest Episode</h3>
-                                            <p className="card__text">The longest episode to date is entitled <strong>"{this.state.durations[this.state.durations.length -1].title}"</strong> and is <strong>{moment().startOf('day').seconds(this.state.durations[this.state.durations.length -1].duration).format('H:mm:ss')}</strong> long.</p>
+                                            <div className="card__section card__section--header">
+                                                <h3 className="card__heading">Longest Episode</h3>
+                                            </div>
+                                            <div className="card__section">
+                                                <p className="card__text">The longest episode to date is entitled <strong>"{this.state.durations[this.state.durations.length -1].title}"</strong> and is <strong>{moment().startOf('day').seconds(this.state.durations[this.state.durations.length -1].duration).format('H:mm:ss')}</strong> long.</p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col-1-of-3">
                                         <div className="card">
-                                            <h3 className="card__heading">Shortest Episode</h3>                                        
-                                            <p className="card__text">The shortest episode to date is entitled <strong>"{this.state.durations[0].title}"</strong> and is <strong>{moment().startOf('day').seconds(this.state.durations[0].duration).format('H:mm:ss')}</strong> long.</p>
+                                            <div className="card__section card__section--header">
+                                                <h3 className="card__heading">Shortest Episode</h3>      
+                                            </div>
+                                            <div className="card__section">
+                                                <p className="card__text">The shortest episode to date is entitled <strong>"{this.state.durations[0].title}"</strong> and is <strong>{moment().startOf('day').seconds(this.state.durations[0].duration).format('H:mm:ss')}</strong> long.</p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col-1-of-3">
                                         <div className="card">
-                                            <h3 className="card__heading">Average Episode Length</h3>                                                                                
-                                            <p className="card__text">The average episode is <strong>{moment().startOf('day').seconds(this.state.averageDuration).format('H:mm:ss')}</strong></p>
+                                            <div className="card__section card__section--header">                                            
+                                                <h3 className="card__heading">Average Length</h3>
+                                            </div>
+                                            <div className="card__section">
+                                                <p className="card__text">The average episode length is <strong>{moment().startOf('day').seconds(this.state.averageDuration).format('H:mm:ss')}</strong>.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

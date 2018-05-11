@@ -1,21 +1,38 @@
 .search {
+    &__form {
+        display: flex;
+        flex-grow: 1;
+        justify-content: center;
+        width: 100%;
+    }
+
     &__input {
-        background-color: $color-white;
+        background-color: $color-off-white;
         border: none;
         font-family: inherit;
         padding: .8rem 1.2rem;
+        padding-right: 8.7rem; // account for the 7.5rem button and 1.2rem margin
+        transition: width .25s;
+        width: 80%;
+
+        &:focus {
+            background-color: darken($color-off-white, 10%);
+            outline: none;
+            width: 100%;
+        }
     }
 
     &__button {
-        background-color: $color-white;
+        background-color: transparent;
         border: none;
         cursor: pointer;
-        font-family: inherit;        
+        font-family: inherit;
+        margin-left: -7.6rem;        
         padding: .8rem 1.2rem;
-        transition: background-color .2s;
+        transition: color .2s;
 
         &:hover {
-            background-color: $color-secondary;
+            color: $color-secondary;
         }
     }
 

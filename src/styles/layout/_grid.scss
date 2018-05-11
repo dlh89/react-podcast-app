@@ -1,4 +1,5 @@
 .row {
+    display: flex;
     margin: 0 auto;
 
     &:not(:last-child) {
@@ -7,6 +8,10 @@
         @include respond(mobile) {
             margin-bottom: $gutter-vertical-small;
         }
+    }
+
+    @include respond(mobile) {
+        display: block;
     }
 
     @include clearfix;

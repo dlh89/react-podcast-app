@@ -4,8 +4,6 @@
     padding: .8rem 0;
 
     &__container {
-        align-items: center;
-        display: flex;
         margin: auto;
         max-width: 96rem;
 
@@ -16,8 +14,13 @@
     }
 
     &__list {
+        align-items: center;        
         display: flex;        
         list-style: none;
+
+        @include respond(mobile) {
+            flex-direction: column;
+        }
     }
 
     &__item {

@@ -1,11 +1,24 @@
 .card {
     box-shadow: $box-shadow;
-    padding: 1.8rem;
+    height: 100%;
+
+    &__section {
+        margin-bottom: .8rem;
+        padding: 1.8rem;
+
+        &--header {
+            background-color: $color-light-grey;
+            background-image: linear-gradient(to bottom right, $color-off-white, $color-light-grey);
+        }
+    }
+
+    &__body {
+        padding: 1.8rem;
+    }
 
     &__heading {
         font-weight: 300;
         font-size: 2.4rem;
-        margin-bottom: 1.8rem;
     }
 
     &__text {
