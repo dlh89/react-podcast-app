@@ -14,9 +14,13 @@ app.use(function(req, res, next) {
   next();
 });
 
-// app.get('*', (req, res, next) => {
-//   res.sendFile(path.join(publicPath, 'index.html'));
-// });
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(publicPath, 'index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 
 app.listen(port, () => {
   console.log('Server is running!');
