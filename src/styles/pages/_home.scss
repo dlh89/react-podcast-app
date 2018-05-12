@@ -1,5 +1,5 @@
 .section-banner {
-    background-color: $color-primary;
+    background-image: linear-gradient(to bottom right, $color-primary, $color-secondary);
     color: $color-white;
     overflow: hidden;
 }

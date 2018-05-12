@@ -1,8 +1,8 @@
 .container {
     margin: auto;
-    max-width: 96rem;
+    max-width: 120rem;
 
-    @include respond(tab-port) {
+    @include respond(tab-land) {
         margin: 0 3.2rem;
         max-width: none;
     }

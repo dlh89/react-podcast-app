@@ -32,6 +32,7 @@ export default class Search extends React.Component {
     }
 
     handlePodcasts = (results) => {
+        console.log('state change');
         this.setState({
             podcasts: results
         })
@@ -41,6 +42,12 @@ export default class Search extends React.Component {
         return (
             <div>
                 {this.props.searchTerm ? (
+                    !this.state.podcasts.length ? 
+                    <div className="container">
+                        <p>Getting results...</p>
+                        <div className="u-spinner u-absolute-center" />
+                    </div>
+                    :
                     <div>
                         <p>Showing {this.state.podcasts.length} results for <strong>{this.props.searchTerm}</strong></p>
                         <ul className="search__list">

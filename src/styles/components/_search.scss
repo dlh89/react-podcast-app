@@ -4,6 +4,10 @@
         flex-grow: 1;
         justify-content: center;
         width: 100%;
+
+        @include respond(mobile) {
+            margin: 1rem 0; // same margin as other nav items
+        }
     }
 
     &__input {
@@ -16,9 +20,9 @@
         width: 80%;
 
         &:focus {
-            background-color: darken($color-off-white, 10%);
+            background-color: darken($color-off-white, 5%);
             outline: none;
-            width: 100%;
+            width: 98%;
         }
     }
 

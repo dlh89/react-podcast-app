@@ -23,3 +23,12 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.u-spinner {
+    animation: spin 1s linear infinite;
+    border: .7rem solid #9cff9c;
+    border-top-color: $color-primary;
+    border-radius: 50%;
+    height: 54px;
+    width: 54px;
+}
