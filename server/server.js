@@ -14,20 +14,8 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(publicPath, 'index.html'), function(err) {
-    if (err) {
-      res.status(500).send(err)
-    }
-  })
-})
-
 app.listen(port, () => {
   console.log('Server is running!');
-});
-
-app.get('/api/podcast', (req, res) => {
-  res.send('hello from api');
 });
 
 app.get('/api/feed', (req, res) => {
@@ -40,4 +28,13 @@ app.get('/api/feed', (req, res) => {
   
       res.send(data);
   });
+});
+
+// redirect all other requests to index.html
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(publicPath, 'index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
 })
