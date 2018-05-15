@@ -1,6 +1,8 @@
 import React from 'react';
 import parsePodcast from 'node-podcast-parser';
 import moment from 'moment';
+import Card from './Card';
+import EpisodeDetails from './EpisodeDetails';
 
 export default class ProcessFeed extends React.Component {
     constructor(props) {
@@ -10,7 +12,9 @@ export default class ProcessFeed extends React.Component {
             artist: '',
             episodes: [],
             durations: [],
-            image: ''
+            image: '',
+            longestEpisode: '',
+            shortestEpisode: ''
         }
         this.getFeed();
     }
@@ -28,24 +32,36 @@ export default class ProcessFeed extends React.Component {
         xhttp.send();
     }
 
+    getTimeBetweenEpisodes(episodes) {
+        const sortedByPublished = episodes.sort((a, b) => a.published > b.published ? 1 : -1);
+        console.log(sortedByPublished); 
+        const timeBetweenEpisodes = sortedByPublished.reduce((result, episode, i) => {
+            if(episodes[i+1]) {
+                result.push(moment(episodes[i+1].published).diff(moment(episode.published), 'days'));
+            }
+            return result;
+        }, []);
+        return timeBetweenEpisodes;
+    }
+
     convertXmlToJson(data) {
         parsePodcast(data, (err, data) => {
             if (err) {
               console.error(err);
               return;
             }
-            console.log(data);
+            console.log(data);                   
            
             this.setState({
-                    title: data.title,
-                    description: data.description.long,
-                    episodes: data.episodes,
-                    durations: data.episodes.map(episode => ({title: episode.title, duration: episode.duration}))
-                        .sort((a, b) => a.duration > b.duration ? 1 : -1),
-                    averageDuration: data.episodes.map(episode => episode.duration).reduce((accumulator, currentValue) => accumulator + currentValue) / data.episodes.length,
-                    image: data.image
-                });
-          });
+                title: data.title,
+                description: data.description.long,
+                episodes: data.episodes,
+                averageDuration: data.episodes.map(episode => episode.duration).reduce((accumulator, currentValue) => accumulator + currentValue) / data.episodes.length,
+                image: data.image,
+                sortedByDuration: data.episodes.sort((a, b) => a.duration > b.duration ? 1 : -1),
+                timeBetweenEpisodes: this.getTimeBetweenEpisodes(data.episodes)
+            });
+        });
     }
 
     render() {
@@ -68,85 +84,45 @@ export default class ProcessFeed extends React.Component {
                             <div className="container">
                                 <h2 className="heading heading--secondary">Lifespan</h2>
                                 <p>Episodes: {this.state.episodes.length}</p>
-                                <p className="stats__headline">This podcast released its first episode <strong>{moment(this.state.episodes[this.state.episodes.length-1].published, "YYYYMMDD").fromNow()}</strong>.  The first episode is entitled <strong>"{this.state.episodes[this.state.episodes.length-1].title}"</strong> and was published on <strong>{this.state.episodes[this.state.episodes.length-1].published.toGMTString()}</strong>.</p>
+                                <p className="stats__headline">This podcast released its first episode <strong>{moment(this.state.episodes[0].published, "YYYYMMDD").fromNow()}</strong>.  The first episode is entitled <strong>"{this.state.episodes[0].title}"</strong> and was published on <strong>{this.state.episodes[0].published.toGMTString()}</strong>.</p>
                                 <h2 className="heading heading--secondary">Durations</h2>                                
                                 <div className="row">
                                     <div className="col-1-of-3">
-                                        <div className="card">
-                                            <div className="card__section card__section--header">                                            
-                                                <h3 className="card__heading">Average Length</h3>
-                                            </div>
+                                        <Card title="Average Length">
                                             <div className="card__section">
                                                 <p className="card__text">The average episode length is <strong>{moment().startOf('day').seconds(this.state.averageDuration).format('H:mm:ss')}</strong>.</p>
                                             </div>
-                                        </div>
+                                        </Card>
                                     </div>
                                     <div className="col-1-of-3">                                    
-                                        <div className="card">
-                                            <div className="card__section card__section--header">
-                                                <h3 className="card__heading">Longest Episode</h3>
-                                            </div>
-                                            <div className="card__section">
-                                                <h4 className="card__heading--sub">Title</h4>                                            
-                                                <p className="card__text">{this.state.durations[this.state.durations.length -1].title}</p>
-                                                <hr className="card__hr" />
-                                                <h4 className="card__heading--sub">Duration</h4>                                                                                            
-                                                <p className="card__text">{moment().startOf('day').seconds(this.state.durations[this.state.durations.length -1].duration).format('H:mm:ss')}</p>
-                                                <hr className="card__hr" />                                        
-                                                <h4 className="card__heading--sub">Release Date</h4>                                                                                                                                            
-                                                <p className="card__text"></p>
-                                            </div>
-                                        </div>
+                                        <Card title="Longest Episode"> 
+                                            <EpisodeDetails episode={this.state.sortedByDuration[this.state.sortedByDuration.length -1]} />
+                                        </Card>
                                     </div>
                                     <div className="col-1-of-3">
-                                        <div className="card">
-                                            <div className="card__section card__section--header">
-                                                <h3 className="card__heading">Shortest Episode</h3>      
-                                            </div>
-                                            <div className="card__section">
-                                                <h4 className="card__heading--sub">Title</h4>                                            
-                                                <p className="card__text">{this.state.durations[0].title}</p>
-                                                <hr className="card__hr" />
-                                                <h4 className="card__heading--sub">Duration</h4>                                                                                            
-                                                <p className="card__text">{moment().startOf('day').seconds(this.state.durations[0].duration).format('H:mm:ss')}</p>
-                                                <hr className="card__hr" />                                        
-                                                <h4 className="card__heading--sub">Release Date</h4>                                                                                                                                            
-                                                <p className="card__text"></p>
-                                            </div>
-                                        </div>
+                                        <Card title="Shortest Episode">
+                                            <EpisodeDetails episode={this.state.sortedByDuration[0]} />
+                                        </Card>
                                     </div>
                                 </div>
                                 <h2 className="heading heading--secondary">Releases</h2>    
                                 <div className="row">
                                     <div className="col-1-of-3">
-                                        <div className="card">
-                                            <div className="card__section card__section--header">
-                                                <h3 className="card__heading">Average time between realeases</h3>
-                                            </div>
+                                        <Card title="Average time between releases">
                                             <div className="card__section">
-                                                <p className="card__text"></p>
+                                            {this.state.timeBetweenEpisodes && 
+                                                <p className="card__text">The average time between releases is {Math.round(this.state.timeBetweenEpisodes.reduce((a, b) => a + b) / this.state.episodes.length)} days.</p>
+                                            }
                                             </div>
-                                        </div>
+                                        </Card>
                                     </div>
                                     <div className="col-1-of-3">
-                                        <div className="card">
-                                            <div className="card__section card__section--header">
-                                                <h3 className="card__heading">Longest time between releases</h3>      
-                                            </div>
-                                            <div className="card__section">
-                                                <p className="card__text"></p>
-                                            </div>
-                                        </div>
+                                        <Card title="Longest time between releases">
+                                        </Card>
                                     </div>
                                     <div className="col-1-of-3">
-                                        <div className="card">
-                                            <div className="card__section card__section--header">                                            
-                                                <h3 className="card__heading">Shortest time between releases</h3>
-                                            </div>
-                                            <div className="card__section">
-                                                <p className="card__text"></p>
-                                            </div>
-                                        </div>
+                                        <Card title="Shortest time between releases">
+                                        </Card>
                                     </div>
                                 </div>                            
                                 <img src={this.state.image} className="stats__image" />
