@@ -9,12 +9,8 @@ export default class ProcessFeed extends React.Component {
         super(props);
         this.state = {
             title: '',
-            artist: '',
             episodes: [],
-            durations: [],
-            image: '',
-            longestEpisode: '',
-            shortestEpisode: ''
+            image: ''
         }
         this.getFeed();
     }
@@ -34,7 +30,6 @@ export default class ProcessFeed extends React.Component {
 
     getTimeBetweenEpisodes(episodes) {
         const sortedByPublished = episodes.sort((a, b) => a.published > b.published ? 1 : -1);
-        console.log(sortedByPublished); 
         const timeBetweenEpisodes = sortedByPublished.reduce((result, episode, i) => {
             if(episodes[i+1]) {
                 result.push(moment(episodes[i+1].published).diff(moment(episode.published), 'days'));
@@ -42,6 +37,11 @@ export default class ProcessFeed extends React.Component {
             return result;
         }, []);
         return timeBetweenEpisodes;
+    }
+
+    sortByDuration(episodes) {
+        const sortedByDuration = episodes.map(episode => episode).sort((a, b) => a.duration > b.duration ? 1 : -1)
+        return sortedByDuration;
     }
 
     convertXmlToJson(data) {
@@ -58,7 +58,7 @@ export default class ProcessFeed extends React.Component {
                 episodes: data.episodes,
                 averageDuration: data.episodes.map(episode => episode.duration).reduce((accumulator, currentValue) => accumulator + currentValue) / data.episodes.length,
                 image: data.image,
-                sortedByDuration: data.episodes.sort((a, b) => a.duration > b.duration ? 1 : -1),
+                sortedByDuration: this.sortByDuration(data.episodes),
                 timeBetweenEpisodes: this.getTimeBetweenEpisodes(data.episodes)
             });
         });
@@ -111,7 +111,7 @@ export default class ProcessFeed extends React.Component {
                                         <Card title="Average time between releases">
                                             <div className="card__section">
                                             {this.state.timeBetweenEpisodes && 
-                                                <p className="card__text">The average time between releases is {Math.round(this.state.timeBetweenEpisodes.reduce((a, b) => a + b) / this.state.episodes.length)} days.</p>
+                                                <p className="card__text">The average time between releases is <strong>{Math.round(this.state.timeBetweenEpisodes.reduce((a, b) => a + b) / this.state.episodes.length)} days</strong>.</p>
                                             }
                                             </div>
                                         </Card>

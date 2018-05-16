@@ -7,7 +7,7 @@ export default class EpisodeDetails extends React.Component {
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         const releaseDate = this.props.episode.published;
         this.state = {
-            releasedString: `${releaseDate.getDay()} ${months[releaseDate.getMonth()]}, ${releaseDate.getFullYear()}`
+            releasedString: `${releaseDate.getDate()} ${months[releaseDate.getMonth()]}, ${releaseDate.getFullYear()}`
         }
     }
     render() {
