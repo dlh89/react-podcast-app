@@ -32,10 +32,11 @@ export default class ProcessFeed extends React.Component {
         const sortedByPublished = episodes.sort((a, b) => a.published > b.published ? 1 : -1);
         const timeBetweenEpisodes = sortedByPublished.reduce((result, episode, i) => {
             if(episodes[i+1]) {
-                result.push(moment(episodes[i+1].published).diff(moment(episode.published), 'days'));
+                const episodeObj = { ...episode, daysBeforeNextEp: moment(episodes[i+1].published).diff(moment(episode.published), 'days') }
+                result.push(episodeObj);
             }
             return result;
-        }, []);
+        }, []).sort((a, b) => a.daysBeforeNextEp > b.daysBeforeNextEp ? 1 : -1);
         return timeBetweenEpisodes;
     }
 
@@ -111,17 +112,21 @@ export default class ProcessFeed extends React.Component {
                                         <Card title="Average time between releases">
                                             <div className="card__section">
                                             {this.state.timeBetweenEpisodes && 
-                                                <p className="card__text">The average time between releases is <strong>{Math.round(this.state.timeBetweenEpisodes.reduce((a, b) => a + b) / this.state.episodes.length)} days</strong>.</p>
+                                                <p className="card__text">The average time between releases is <strong>{Math.round(this.state.timeBetweenEpisodes.map(episode => episode.daysBeforeNextEp).reduce((a, b) => a + b) / this.state.episodes.length)} days</strong>.</p>
                                             }
                                             </div>
                                         </Card>
                                     </div>
                                     <div className="col-1-of-3">
                                         <Card title="Longest time between releases">
+                                            <p>
+                                                The longest time between episodes was <strong>{this.state.timeBetweenEpisodes[this.state.timeBetweenEpisodes.length-1].daysBeforeNextEp} days</strong>. The break was after the episode {this.state.timeBetweenEpisodes[this.state.timeBetweenEpisodes.length-1].title} which was released on {this.state.timeBetweenEpisodes[this.state.timeBetweenEpisodes.length-1].published.toGMTString()}.
+                                            </p>
                                         </Card>
                                     </div>
                                     <div className="col-1-of-3">
                                         <Card title="Shortest time between releases">
+                                            <p>The shortest time between episodes was <strong>{this.state.timeBetweenEpisodes[0].daysBeforeNextEp} days</strong>.</p>                                        
                                         </Card>
                                     </div>
                                 </div>                            
