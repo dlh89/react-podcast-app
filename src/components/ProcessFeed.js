@@ -9,8 +9,14 @@ export default class ProcessFeed extends React.Component {
         super(props);
         this.state = {
             title: '',
+            description: '',
+            averageDuration: '',
+            image: '',
+            sortedByDuration: [],
             episodes: [],
-            image: ''
+            longestBreak: '',
+            shortestBreak: '',
+            averageTimeBetweenReleases: ''
         }
         this.getFeed();
     }
@@ -28,21 +34,80 @@ export default class ProcessFeed extends React.Component {
         xhttp.send();
     }
 
-    getTimeBetweenEpisodes(episodes) {
-        const sortedByPublished = episodes.sort((a, b) => a.published > b.published ? 1 : -1);
-        const timeBetweenEpisodes = sortedByPublished.reduce((result, episode, i) => {
-            if(episodes[i+1]) {
-                const episodeObj = { ...episode, daysBeforeNextEp: moment(episodes[i+1].published).diff(moment(episode.published), 'days') }
-                result.push(episodeObj);
-            }
-            return result;
-        }, []).sort((a, b) => a.daysBeforeNextEp > b.daysBeforeNextEp ? 1 : -1);
-        return timeBetweenEpisodes;
-    }
-
     sortByDuration(episodes) {
         const sortedByDuration = episodes.map(episode => episode).sort((a, b) => a.duration > b.duration ? 1 : -1)
         return sortedByDuration;
+    }
+
+    addTimeBetweenEpisodes(episodes) {
+        const sortedEpisodes = episodes.sort((a, b) => a.published > b.published ? 1 : -1);
+        const updatedEpisodes = sortedEpisodes.map((episode, i) => {
+            let daysBeforeNextEp;
+            if (episodes[i+1]) {
+                daysBeforeNextEp = moment(episodes[i+1].published).diff(moment(episode.published), 'days');
+            }
+            
+            const updatedEpisode = {
+                ...episode,
+                episodeNumber: i+1,
+                daysBeforeNextEp
+            }
+            return updatedEpisode;
+        })
+        return updatedEpisodes;
+    }
+
+    getSignificantBreaks(episodes) {
+        const sortedByBreaks = episodes.reduce((result, episode, i) => {
+            if(episode.daysBeforeNextEp >= 0) {
+                result.push(episode);
+            }
+            return result;
+        }, []).sort((a, b) => a.daysBeforeNextEp > b.daysBeforeNextEp ? 1 : -1);
+        const longestBreak = this.getEpisodeAndNextEpisode(episodes, sortedByBreaks[sortedByBreaks.length-1]);
+        const shortestBreak = this.getEpisodeAndNextEpisode(episodes, sortedByBreaks[0]);
+        console.log('longest break', longestBreak);
+        console.log('shortest break', shortestBreak);        
+        this.setState({
+            longestBreak,
+            shortestBreak
+        });
+        console.log(this.state.longestBreak)
+    }
+
+    getEpisodeAndNextEpisode(episodes, episode) {
+        const nextEpisode = episodes[episode.episodeNumber]
+        return {episode: episode, nextEpisode: nextEpisode};
+    }
+
+    getAverageDuration(episodes) {
+        // reduce episodes array to only include episodes with durations
+        const episodesDurations = episodes.reduce((result, episode) => {
+            if (episode.duration) {
+                result.push(episode.duration);
+            }
+            return result;
+        }, []);
+        // get the mean duration
+        const averageDuration = episodesDurations.reduce((accumulator, currentValue) => accumulator + currentValue) / episodesDurations.length;
+        this.setState({
+            averageDuration
+        });
+    }
+
+    getAverageTimeBetweenReleases(episodes) {
+        // reduce episodes array to only include episodes with daysBeforeNextEpisode
+        const episodeReleaseDates = episodes.reduce((result, episode) => {
+            if (episode.daysBeforeNextEp >= 0) {
+                result.push(episode.daysBeforeNextEp);
+            }
+            return result;
+        }, []);
+        // get the mean time between releases
+        const averageTimeBetweenReleases = episodeReleaseDates.reduce((accumulator, currentValue) => accumulator + currentValue) / episodeReleaseDates.length;
+        this.setState({
+            averageTimeBetweenReleases
+        });
     }
 
     convertXmlToJson(data) {
@@ -56,12 +121,13 @@ export default class ProcessFeed extends React.Component {
             this.setState({
                 title: data.title,
                 description: data.description.long,
-                episodes: data.episodes,
-                averageDuration: data.episodes.map(episode => episode.duration).reduce((accumulator, currentValue) => accumulator + currentValue) / data.episodes.length,
                 image: data.image,
                 sortedByDuration: this.sortByDuration(data.episodes),
-                timeBetweenEpisodes: this.getTimeBetweenEpisodes(data.episodes)
+                episodes: this.addTimeBetweenEpisodes(data.episodes)
             });
+            this.getSignificantBreaks(this.state.episodes);
+            this.getAverageDuration(this.state.episodes);
+            this.getAverageTimeBetweenReleases(this.state.episodes);
         });
     }
 
@@ -85,7 +151,7 @@ export default class ProcessFeed extends React.Component {
                             <div className="container">
                                 <h2 className="heading heading--secondary">Lifespan</h2>
                                 <p>Episodes: {this.state.episodes.length}</p>
-                                <p className="stats__headline">This podcast released its first episode <strong>{moment(this.state.episodes[0].published, "YYYYMMDD").fromNow()}</strong>.  The first episode is entitled <strong>"{this.state.episodes[0].title}"</strong> and was published on <strong>{this.state.episodes[0].published.toGMTString()}</strong>.</p>
+                                <p className="stats__headline">This podcast released its first episode <strong>{moment(this.state.episodes[0].published, "YYYYMMDD").fromNow()}</strong>.  The first episode is entitled <strong>"{this.state.episodes[0].title}"</strong> and was published on <strong>{moment(this.state.episodes[0].published).format('MMMM Do YYYY')}</strong>.</p>
                                 <h2 className="heading heading--secondary">Durations</h2>                                
                                 <div className="row">
                                     <div className="col-1-of-3">
@@ -111,22 +177,26 @@ export default class ProcessFeed extends React.Component {
                                     <div className="col-1-of-3">
                                         <Card title="Average time between releases">
                                             <div className="card__section">
-                                            {this.state.timeBetweenEpisodes && 
-                                                <p className="card__text">The average time between releases is <strong>{Math.round(this.state.timeBetweenEpisodes.map(episode => episode.daysBeforeNextEp).reduce((a, b) => a + b) / this.state.episodes.length)} days</strong>.</p>
-                                            }
+                                                <p className="card__text">The average time between releases is <strong>{Math.round(this.state.averageTimeBetweenReleases)} days</strong>.</p>
                                             </div>
                                         </Card>
                                     </div>
                                     <div className="col-1-of-3">
                                         <Card title="Longest time between releases">
-                                            <p>
-                                                The longest time between episodes was <strong>{this.state.timeBetweenEpisodes[this.state.timeBetweenEpisodes.length-1].daysBeforeNextEp} days</strong>. The break was after the episode {this.state.timeBetweenEpisodes[this.state.timeBetweenEpisodes.length-1].title} which was released on {this.state.timeBetweenEpisodes[this.state.timeBetweenEpisodes.length-1].published.toGMTString()}.
-                                            </p>
+                                            {this.state.longestBreak && 
+                                                <p>
+                                                    The longest time between releases was <strong>{this.state.longestBreak.episode.daysBeforeNextEp} days</strong>. It occurred between <strong>{moment(this.state.longestBreak.episode.published).format('MMMM Do YYYY')}</strong> and <strong>{moment(this.state.longestBreak.nextEpisode.published).format('MMMM Do YYYY')}</strong>.
+                                                </p>
+                                            }
                                         </Card>
                                     </div>
                                     <div className="col-1-of-3">
                                         <Card title="Shortest time between releases">
-                                            <p>The shortest time between episodes was <strong>{this.state.timeBetweenEpisodes[0].daysBeforeNextEp} days</strong>.</p>                                        
+                                            {this.state.longestBreak && 
+                                                <p>
+                                                    The shortest time between releases was <strong>{this.state.shortestBreak.episode.daysBeforeNextEp} days</strong>. It occurred between <strong>{moment(this.state.shortestBreak.episode.published).format('MMMM Do YYYY')}</strong> and <strong>{moment(this.state.shortestBreak.nextEpisode.published).format('MMMM Do YYYY')}</strong>.
+                                                </p>
+                                            }
                                         </Card>
                                     </div>
                                 </div>                            

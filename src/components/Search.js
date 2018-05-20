@@ -5,15 +5,25 @@ export default class Search extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            podcasts: []
+            podcasts: [],
+            searchTerm: this.props.searchTerm,
+            error: ''
         }
-        this.handleSearch();
+        this.handleSearch(this.state.searchTerm);
     }
+
+    componentWillReceiveProps(nextProps) {
+        // Search again when props change
+        if (nextProps.searchTerm !== this.state.searchTerm) {
+          this.setState({ searchTerm: nextProps.searchTerm });
+          this.handleSearch(nextProps.searchTerm);
+        }
+      }
     
 
-    handleSearch = () => {
-        if (this.props.searchTerm) {
-            this.apiSearch(this.props.searchTerm);            
+    handleSearch = (searchTerm) => {
+        if (searchTerm) {
+            this.apiSearch(searchTerm);            
         }
     }
 
@@ -22,8 +32,13 @@ export default class Search extends React.Component {
         xhttp.onreadystatechange = (e) => {
             if (e.target.readyState == 4 && e.target.status == 200) {
                 const data = JSON.parse(e.target.responseText);
-                this.handlePodcasts(data.results);
-                console.log(data.results);
+                if (data.results.length > 0) {
+                    this.setState({ error: ''}) // clear any errors
+                    this.handlePodcasts(data.results);
+                    console.log(data.results);
+                } else {
+                    this.setState({ error: 'No results for that search term. Try again.'})
+                }
             }
         }
         const url = `https://itunes.apple.com/search?term=${searchTerm}&entity=podcast&limit=12`
@@ -32,7 +47,6 @@ export default class Search extends React.Component {
     }
 
     handlePodcasts = (results) => {
-        console.log('state change');
         this.setState({
             podcasts: results
         })
@@ -41,7 +55,10 @@ export default class Search extends React.Component {
     render() {
         return (
             <div>
-                {this.props.searchTerm ? (
+                {this.state.error ? 
+                    <p>{this.state.error}</p>
+                :
+                this.state.searchTerm ? (
                     !this.state.podcasts.length ? 
                     <div className="container">
                         <p>Getting results...</p>
@@ -49,7 +66,7 @@ export default class Search extends React.Component {
                     </div>
                     :
                     <div>
-                        <p>Showing {this.state.podcasts.length} results for <strong>{this.props.searchTerm}</strong></p>
+                        <p>Showing {this.state.podcasts.length} results for <strong>{this.state.searchTerm}</strong></p>
                         <ul className="search__list">
                             {this.state.podcasts.map(function(podcast, index){
                                 return (
