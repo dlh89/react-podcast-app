@@ -3,6 +3,7 @@ import parsePodcast from 'node-podcast-parser';
 import moment from 'moment';
 import Card from './Card';
 import EpisodeDetails from './EpisodeDetails';
+import Chart from './Chart';
 
 export default class ProcessFeed extends React.Component {
     constructor(props) {
@@ -172,6 +173,7 @@ export default class ProcessFeed extends React.Component {
                                         </Card>
                                     </div>
                                 </div>
+                                <Chart title="Episode Length Over Time" label="Duration" labels={this.state.episodes.map(episode => episode.title)} data={this.state.episodes.map(episode => episode.duration)}/>
                                 <h2 className="heading heading--secondary">Releases</h2>    
                                 <div className="row">
                                     <div className="col-1-of-3">
@@ -199,7 +201,8 @@ export default class ProcessFeed extends React.Component {
                                             }
                                         </Card>
                                     </div>
-                                </div>                            
+                                </div>   
+                                <Chart title="Days Between Releases Over Time" label="Days Before Next Episode" labels={this.state.episodes.map(episode => episode.title)} data={this.state.episodes.map(episode => episode.daysBeforeNextEp)}/>                                                      
                                 <img src={this.state.image} className="stats__image" />
                             </div>
                         </div>
