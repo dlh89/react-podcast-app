@@ -11,18 +11,18 @@ import createHistory from 'history/createBrowserHistory';
 export const history = createHistory();
 
 const AppRouter = () => (
-    <BrowserRouter>
-      <div>
-        <Navbar />        
-        <Switch>
-          <Route path="/" component={HomePage} exact={true} />
-          <Route path="/podcast/:rssFeed(.*)" component={PodcastPage} />
-          <Route path="/search/" component={SearchPage} exact={true} />          
-          <Route path="/search/:searchTerm" component={SearchResults} />
-          <Route component={NotFoundPage} />          
-        </Switch>
-      </div>
-    </BrowserRouter>
-  );
-  
-  export default AppRouter;
+  <BrowserRouter>
+    <div>
+      <Navbar />
+      <Switch>
+        <Route path="/" component={HomePage} exact={true} />
+        <Route path="/podcast/:rssFeed(.*)" component={PodcastPage} />
+        <Route path="/search/" component={SearchPage} exact={true} />
+        <Route path="/search/:searchTerm" component={SearchResults} />
+        <Route component={NotFoundPage} />
+      </Switch>
+    </div>
+  </BrowserRouter>
+);
+
+export default AppRouter;
