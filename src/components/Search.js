@@ -20,16 +20,16 @@ export default class Search extends React.Component {
     }
   }
 
-  handleSearch = searchTerm => {
+  handleSearch = (searchTerm) => {
     if (searchTerm) {
       this.apiSearch(searchTerm);
     }
   };
 
-  apiSearch = searchTerm => {
+  apiSearch = (searchTerm) => {
     const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = e => {
-      if (e.target.readyState == 4 && e.target.status == 200) {
+    xhttp.onreadystatechange = (e) => {
+      if (e.target.readyState === 4 && e.target.status === 200) {
         const data = JSON.parse(e.target.responseText);
         if (data.results.length > 0) {
           this.setState({ error: '' }); // clear any errors
@@ -45,7 +45,7 @@ export default class Search extends React.Component {
     xhttp.send();
   };
 
-  handlePodcasts = results => {
+  handlePodcasts = (results) => {
     this.setState({
       podcasts: results,
     });

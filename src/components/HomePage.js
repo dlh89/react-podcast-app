@@ -1,4 +1,5 @@
 import React from 'react';
+import PopularGrid from './PopularGrid';
 
 const HomePage = () => (
   <div>
@@ -9,9 +10,7 @@ const HomePage = () => (
     </div>
     <div className="section-info u-margin-top-large">
       <div className="container">
-        <h3 className="heading heading--sub-main">
-          Find out everything you wanted to know about your favourite podcasts.
-        </h3>
+        <PopularGrid />
       </div>
     </div>
   </div>

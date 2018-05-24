@@ -25,7 +25,7 @@ export default class ProcessFeed extends React.Component {
   getFeed() {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = (e) => {
-      if (e.target.readyState == 4 && e.target.status == 200) {
+      if (e.target.readyState === 4 && e.target.status === 200) {
         const data = e.target.responseText;
         this.convertXmlToJson(data);
       }

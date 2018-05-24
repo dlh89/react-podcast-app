@@ -1,5 +1,4 @@
 import React from 'react';
-import ProcessFeed from '../components/ProcessFeed';
 import Search from '../components/Search';
 
 const SearchResults = ({ match }) => (
