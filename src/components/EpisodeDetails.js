@@ -1,23 +1,10 @@
 import React from 'react';
 import moment from 'moment';
+import readableSeconds from 'readable-seconds';
 
 export default class EpisodeDetails extends React.Component {
   constructor(props) {
     super(props);
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
     const releaseDate = this.props.episode.published;
     this.state = {
       releasedString: `${moment(releaseDate).format('MMMM Do YYYY')}`,
@@ -34,12 +21,7 @@ export default class EpisodeDetails extends React.Component {
         </p>
         <hr className="card__hr" />
         <h4 className="card__heading--sub">Duration</h4>
-        <p className="card__text">
-          {moment()
-            .startOf('day')
-            .seconds(this.props.episode.duration)
-            .format('H:mm:ss')}
-        </p>
+        <p className="card__text">{readableSeconds(this.props.episode.duration)}</p>
         <hr className="card__hr" />
         <h4 className="card__heading--sub">Release Date</h4>
         <p className="card__text">{this.state.releasedString}</p>
