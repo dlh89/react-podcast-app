@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
 import HomePage from '../components/HomePage';
 import PodcastPage from '../components/PodcastPage';
 import SearchPage from '../components/SearchPage';
 import SearchResults from '../components/SearchResults';
 import Navbar from '../components/Navbar';
 import NotFoundPage from '../components/NotFoundPage';
-import createHistory from 'history/createBrowserHistory';
 
 export const history = createHistory();
 

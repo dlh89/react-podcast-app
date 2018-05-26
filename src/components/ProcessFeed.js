@@ -35,14 +35,14 @@ export default class ProcessFeed extends React.Component {
     xhttp.send();
   }
 
-  sortByDuration(episodes) {
+  static sortByDuration(episodes) {
     const sortedByDuration = episodes
       .map(episode => episode)
       .sort((a, b) => (a.duration > b.duration ? 1 : -1));
     return sortedByDuration;
   }
 
-  addTimeBetweenEpisodes(episodes) {
+  static addTimeBetweenEpisodes(episodes) {
     const sortedEpisodes = episodes.sort((a, b) => (a.published > b.published ? 1 : -1));
     const updatedEpisodes = sortedEpisodes.map((episode, i) => {
       let daysBeforeNextEp;
@@ -72,21 +72,18 @@ export default class ProcessFeed extends React.Component {
         return result;
       }, [])
       .sort((a, b) => (a.daysBeforeNextEp > b.daysBeforeNextEp ? 1 : -1));
-    const longestBreak = this.getEpisodeAndNextEpisode(
+    const longestBreak = ProcessFeed.getEpisodeAndNextEpisode(
       episodes,
       sortedByBreaks[sortedByBreaks.length - 1],
     );
-    const shortestBreak = this.getEpisodeAndNextEpisode(episodes, sortedByBreaks[0]);
-    console.log('longest break', longestBreak);
-    console.log('shortest break', shortestBreak);
+    const shortestBreak = ProcessFeed.getEpisodeAndNextEpisode(episodes, sortedByBreaks[0]);
     this.setState({
       longestBreak,
       shortestBreak,
     });
-    console.log(this.state.longestBreak);
   }
 
-  getEpisodeAndNextEpisode(episodes, episode) {
+  static getEpisodeAndNextEpisode(episodes, episode) {
     const nextEpisode = episodes[episode.episodeNumber];
     return { episode, nextEpisode };
   }
@@ -126,19 +123,19 @@ export default class ProcessFeed extends React.Component {
   }
 
   convertXmlToJson(data) {
-    parsePodcast(data, (err, data) => {
+    parsePodcast(data, (err, jsonData) => {
       if (err) {
         console.error(err);
         return;
       }
-      console.log(data);
+      console.log(jsonData);
 
       this.setState({
-        title: data.title,
-        description: data.description.long,
-        image: data.image,
-        sortedByDuration: this.sortByDuration(data.episodes),
-        episodes: this.addTimeBetweenEpisodes(data.episodes),
+        title: jsonData.title,
+        description: jsonData.description.long,
+        image: jsonData.image,
+        sortedByDuration: ProcessFeed.sortByDuration(jsonData.episodes),
+        episodes: ProcessFeed.addTimeBetweenEpisodes(jsonData.episodes),
       });
       this.getSignificantBreaks(this.state.episodes);
       this.getAverageDuration(this.state.episodes);

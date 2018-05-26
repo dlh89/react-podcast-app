@@ -45,8 +45,15 @@ export default class PopularGrid extends React.Component {
               this.state.popularPodcasts.map((podcast, index) => (
                 <div className="popular-grid__item" key={index}>
                   <Link to={`/podcast/${podcast.feedUrl}`}>
-                    <div>
-                      <img src={podcast.artworkUrl600} className="popular-grid__image" />
+                    <div className="popular-grid__side">
+                      <img
+                        src={podcast.artworkUrl600}
+                        className="popular-grid__side popular-grid__side--front"
+                      />
+                      <div className="popular-grid__side popular-grid__side--back">
+                        <p className="popular-grid__title">{podcast.collectionName}</p>
+                        <p className="popular-grid__info">Genre: {podcast.primaryGenreName}</p>
+                      </div>
                     </div>
                   </Link>
                 </div>

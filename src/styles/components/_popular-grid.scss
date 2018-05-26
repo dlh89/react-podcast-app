@@ -5,20 +5,53 @@
   line-height: 0;
 
   &__item {
-    perspective: 150rem;
-    position: relative;
     width: calc(100% / 3);
   }
 
-  &__image {
-    width: 100%;
+  &__title {
+    color: $color-white;
+    font-size: 2.2rem;
+    line-height: 1.8;
+    text-transform: uppercase;
   }
 
-  &__title {
-    top: 50%;
-    font-weight: bold;
-    position: absolute;
-    text-align: center;
-    width: 100%;
+  &__info {
+    color: $color-white;
+    font-size: 1.4rem;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  &__side {
+    backface-visibility: hidden;
+    perspective: 100rem;
+    transition: transform 1s ease;
+
+    &:hover &--front {
+      transform: rotateY(-180deg);
+    }
+
+    &:hover &--back {
+      transform: rotateY(0);
+    }
+    &--front {
+      width: 100%;
+    }
+
+    &--back {
+      background-image: linear-gradient(
+        to bottom right,
+        $color-primary,
+        $color-secondary
+      );
+      font-weight: bold;
+      height: 100%;
+      padding: 1rem;
+      position: absolute;
+      text-align: center;
+      top: 0;
+      transform: rotateY(180deg);
+      width: 100%;
+    }
   }
 }
