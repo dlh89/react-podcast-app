@@ -24,6 +24,7 @@
 
   &__side {
     backface-visibility: hidden;
+    outline: 1px solid transparent;
     perspective: 100rem;
     transition: transform 1s ease;
 
