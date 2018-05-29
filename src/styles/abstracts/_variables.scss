@@ -1,16 +1,22 @@
 // colours
 $color-black: #333;
-$color-white: #FFF;
+$color-white: #fff;
 $color-off-white: #f7f7f7;
 $color-light-grey: #dcdcdc;
 $color-grey: #a0a0a0;
-$color-primary: #006A55;
+$color-primary: #006a55;
 $color-secondary: #00ad5d;
 
 // other
 $box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
+$primary-gradient: linear-gradient(
+  to bottom right,
+  $color-primary,
+  $color-secondary
+);
 
 // grid
 $gutter-vertical: 8rem;
+
 $gutter-vertical-small: 6rem;
 $gutter-width: 6rem;

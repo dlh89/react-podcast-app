@@ -33,8 +33,8 @@ export default class PopularGrid extends React.Component {
     return (
       <div className="row">
         <div className="col-1-of-2">
-          <h1 className="heading">Popular Podcasts</h1>
-          <p>
+          <h1 className="heading heading--background-image heading--primary">Popular Podcasts</h1>
+          <p className="large-text">
             These podcasts are popular at the moment on itunes. Click on any of them to see their
             podsend page.
           </p>

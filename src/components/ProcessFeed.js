@@ -1,9 +1,7 @@
 import React from 'react';
 import parsePodcast from 'node-podcast-parser';
 import moment from 'moment';
-import Card from './Card';
-import EpisodeDetails from './EpisodeDetails';
-import Chart from './Chart';
+import Overview from './Overview';
 
 export default class ProcessFeed extends React.Component {
   constructor(props) {
@@ -18,6 +16,7 @@ export default class ProcessFeed extends React.Component {
       longestBreak: '',
       shortestBreak: '',
       averageTimeBetweenReleases: '',
+      error: '',
     };
     this.getFeed();
   }
@@ -126,146 +125,44 @@ export default class ProcessFeed extends React.Component {
     parsePodcast(data, (err, jsonData) => {
       if (err) {
         console.error(err);
+        this.setState({
+          error: true,
+        });
         return;
       }
       console.log(jsonData);
 
-      this.setState({
-        title: jsonData.title,
-        description: jsonData.description.long,
-        image: jsonData.image,
-        sortedByDuration: ProcessFeed.sortByDuration(jsonData.episodes),
-        episodes: ProcessFeed.addTimeBetweenEpisodes(jsonData.episodes),
-      });
-      this.getSignificantBreaks(this.state.episodes);
-      this.getAverageDuration(this.state.episodes);
-      this.getAverageTimeBetweenReleases(this.state.episodes);
+      if (!jsonData.episodes[0].duration) {
+        this.setState({
+          error: true,
+        });
+      } else {
+        this.setState({
+          title: jsonData.title,
+          description: jsonData.description.long,
+          image: jsonData.image,
+          sortedByDuration: ProcessFeed.sortByDuration(jsonData.episodes),
+          episodes: ProcessFeed.addTimeBetweenEpisodes(jsonData.episodes),
+        });
+
+        this.getSignificantBreaks(this.state.episodes);
+        this.getAverageDuration(this.state.episodes);
+        this.getAverageTimeBetweenReleases(this.state.episodes);
+      }
     });
   }
 
   render() {
     return (
       <div>
-        {!this.state.title ? (
+        {!this.state.title && !this.state.error ? (
           <div className="container u-margin-top-medium">
             <p>Getting data...</p>
             <div className="u-spinner u-absolute-center" />
           </div>
         ) : (
           <div>
-            <div className="section-heading">
-              <div className="container">
-                <h1 className="heading heading--primary">{this.state.title}</h1>
-                <h2 className="heading heading--secondary">{this.state.description}</h2>
-              </div>
-            </div>
-            <div className="section-stats u-margin-top-large">
-              <div className="container">
-                <h2 className="heading heading--secondary">Lifespan</h2>
-                <p>Episodes: {this.state.episodes.length}</p>
-                <p className="stats__headline">
-                  This podcast released its first episode{' '}
-                  <strong>{moment(this.state.episodes[0].published, 'YYYYMMDD').fromNow()}</strong>.
-                  The first episode is entitled <strong>"{this.state.episodes[0].title}"</strong>{' '}
-                  and was published on{' '}
-                  <strong>{moment(this.state.episodes[0].published).format('MMMM Do YYYY')}</strong>.
-                </p>
-                <h2 className="heading heading--secondary">Durations</h2>
-                <div className="row">
-                  <div className="col-1-of-3">
-                    <Card title="Average Length">
-                      <div className="card__section">
-                        <p className="card__text">
-                          The average episode length is{' '}
-                          <strong>
-                            {moment()
-                              .startOf('day')
-                              .seconds(this.state.averageDuration)
-                              .format('H:mm:ss')}
-                          </strong>.
-                        </p>
-                      </div>
-                    </Card>
-                  </div>
-                  <div className="col-1-of-3">
-                    <Card title="Longest Episode">
-                      <EpisodeDetails
-                        episode={
-                          this.state.sortedByDuration[this.state.sortedByDuration.length - 1]
-                        }
-                      />
-                    </Card>
-                  </div>
-                  <div className="col-1-of-3">
-                    <Card title="Shortest Episode">
-                      <EpisodeDetails episode={this.state.sortedByDuration[0]} />
-                    </Card>
-                  </div>
-                </div>
-                <Chart
-                  title="Episode Length Over Time"
-                  label="Duration"
-                  labels={this.state.episodes.map(episode => episode.title)}
-                  data={this.state.episodes.map(episode => episode.duration)}
-                />
-                <h2 className="heading heading--secondary">Releases</h2>
-                <div className="row">
-                  <div className="col-1-of-3">
-                    <Card title="Average time between releases">
-                      <div className="card__section">
-                        <p className="card__text">
-                          The average time between releases is{' '}
-                          <strong>{Math.round(this.state.averageTimeBetweenReleases)} days</strong>.
-                        </p>
-                      </div>
-                    </Card>
-                  </div>
-                  <div className="col-1-of-3">
-                    <Card title="Longest time between releases">
-                      {this.state.longestBreak && (
-                        <p>
-                          The longest time between releases was{' '}
-                          <strong>{this.state.longestBreak.episode.daysBeforeNextEp} days</strong>.
-                          It occurred between{' '}
-                          <strong>
-                            {moment(this.state.longestBreak.episode.published).format('MMMM Do YYYY')}
-                          </strong>{' '}
-                          and{' '}
-                          <strong>
-                            {moment(this.state.longestBreak.nextEpisode.published).format('MMMM Do YYYY')}
-                          </strong>.
-                        </p>
-                      )}
-                    </Card>
-                  </div>
-                  <div className="col-1-of-3">
-                    <Card title="Shortest time between releases">
-                      {this.state.longestBreak && (
-                        <p>
-                          The shortest time between releases was{' '}
-                          <strong>{this.state.shortestBreak.episode.daysBeforeNextEp} days</strong>.
-                          It occurred between{' '}
-                          <strong>
-                            {moment(this.state.shortestBreak.episode.published).format('MMMM Do YYYY')}
-                          </strong>{' '}
-                          and{' '}
-                          <strong>
-                            {moment(this.state.shortestBreak.nextEpisode.published).format('MMMM Do YYYY')}
-                          </strong>.
-                        </p>
-                      )}
-                    </Card>
-                  </div>
-                </div>
-                <Chart
-                  title="Days Between Releases Over Time"
-                  label="Days Before Next Episode"
-                  labels={this.state.episodes.map(episode => episode.title)}
-                  data={this.state.episodes.map(episode => episode.daysBeforeNextEp)}
-                />
-                <img src={this.state.image} className="stats__image" />
-              </div>
-            </div>
+            <Overview data={{ ...this.state }} />
           </div>
         )}
       </div>
