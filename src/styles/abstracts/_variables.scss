@@ -9,11 +9,7 @@ $color-secondary: #00ad5d;
 
 // other
 $box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
-$primary-gradient: linear-gradient(
-  to bottom right,
-  $color-primary,
-  $color-secondary
-);
+$primary-gradient: linear-gradient(to bottom, $color-primary, $color-secondary);
 
 // grid
 $gutter-vertical: 8rem;

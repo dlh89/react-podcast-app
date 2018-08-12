@@ -2,4 +2,7 @@
   background-image: $primary-gradient;
   color: $color-white;
   overflow: hidden;
+  ::placeholder {
+    color: gray;
+  }
 }
