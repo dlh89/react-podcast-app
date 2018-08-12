@@ -1,19 +1,14 @@
 import React from 'react';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
 import Card from './Card';
 import EpisodeDetails from './EpisodeDetails';
 import Chart from './Chart';
+import UnableToRetrieveData from './UnableToRetrieveData';
+import Lifespan from './Lifespan';
 
 const Overview = props =>
   (props.data.error ? (
-    <div className="container u-margin-top-large">
-      <p>
-        Unfortunately the RSS feed for this podcast did not provide us with the data we require to
-        generate our analysis. Please try searching for another podcast.
-      </p>
-      <Link to={'/'}>Return home</Link>
-    </div>
+    <UnableToRetrieveData />
   ) : (
     <div>
       <div className="section-heading">
@@ -24,15 +19,7 @@ const Overview = props =>
       </div>
       <div className="section-stats u-margin-top-large">
         <div className="container">
-          <h2 className="heading heading--secondary">Lifespan</h2>
-          <p>Episodes: {props.data.episodes.length}</p>
-          <p className="stats__headline">
-            This podcast released its first episode{' '}
-            <strong>{moment(props.data.episodes[0].published, 'YYYYMMDD').fromNow()}</strong>. The
-            first episode is entitled <strong>"{props.data.episodes[0].title}"</strong> and was
-            published on{' '}
-            <strong>{moment(props.data.episodes[0].published).format('MMMM Do YYYY')}</strong>.
-          </p>
+          <Lifespan episodes={props.data.episodes} />
           <h2 className="heading heading--secondary">Durations</h2>
           <div className="row">
             <div className="col-1-of-3">
