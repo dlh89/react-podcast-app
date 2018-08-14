@@ -161,9 +161,7 @@ export default class ProcessFeed extends React.Component {
             <div className="u-spinner u-absolute-center" />
           </div>
         ) : (
-          <div>
-            <Overview data={{ ...this.state }} />
-          </div>
+          <div />
         )}
       </div>
     );

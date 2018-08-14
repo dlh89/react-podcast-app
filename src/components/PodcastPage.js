@@ -1,5 +1,5 @@
 import React from 'react';
-import ProcessFeed from '../components/ProcessFeed';
+import ProcessFeed from './ProcessFeed';
 
 const Podcast = ({ match }) => (
   <div>
