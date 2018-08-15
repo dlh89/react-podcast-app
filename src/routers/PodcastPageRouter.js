@@ -6,6 +6,7 @@ import PodcastPageNav from '../components/PodcastPageNav';
 import PodcastDataContainer from '../components/PodcastDataContainer';
 import RetrievingData from '../components/RetrievingData';
 import PodcastHeader from '../components/PodcastHeader';
+import Charts from '../components/Charts';
 
 export default class PodcastPageRouter extends React.Component {
   constructor(props) {
@@ -34,6 +35,7 @@ export default class PodcastPageRouter extends React.Component {
         )}
         <Switch>
           <Route path={`${this.props.match.path}/overview`} component={Overview} />
+          <Route path={`${this.props.match.path}/charts`} component={Charts} />
           <Route
             path={`${this.props.match.path}/episodes`}
             render={() => <Episodes data={this.state.data} />}

@@ -6,7 +6,7 @@ const PodcastHeader = props => (
       <img
         className="podcast-header__image"
         src={props.data.image}
-        alt={`${props.data.title} podcast logo}`}
+        alt={`${props.data.title} podcast logo`}
       />
       <h1 className="podcast-header__title">{props.data.title}</h1>
     </div>

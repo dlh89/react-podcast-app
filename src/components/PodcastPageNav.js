@@ -3,8 +3,8 @@ import { NavLink } from 'react-router-dom';
 
 const PodcastPageNav = props => (
   <div className="container u-margin-top-small">
-    <ul className="podcast-nav">
-      <li>
+    <div className="row podcast-nav">
+      <div className="col-1-of-3">
         <NavLink
           to={`${props.match.url}/overview`}
           className="podcast-nav__item"
@@ -12,8 +12,8 @@ const PodcastPageNav = props => (
         >
           Overview
         </NavLink>
-      </li>
-      <li>
+      </div>
+      <div className="col-1-of-3">
         <NavLink
           to={`${props.match.url}/charts`}
           className="podcast-nav__item"
@@ -21,8 +21,8 @@ const PodcastPageNav = props => (
         >
           Charts
         </NavLink>
-      </li>
-      <li>
+      </div>
+      <div className="col-1-of-3">
         <NavLink
           to={`${props.match.url}/episodes`}
           className="podcast-nav__item"
@@ -30,8 +30,8 @@ const PodcastPageNav = props => (
         >
           Episodes
         </NavLink>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 );
 

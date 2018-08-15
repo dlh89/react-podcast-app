@@ -10,6 +10,12 @@
   list-style: none;
   width: 100%;
   &__item {
+    color: $color-black;
+    display: block;
+    text-align: center;
     text-decoration: none;
+    &--active {
+      background-color: $color-primary;
+    }
   }
 }
